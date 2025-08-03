@@ -1,0 +1,34 @@
+//2106. Maximum Fruits Harvested After at Most K Steps
+
+
+
+class Solution {
+    public int maxTotalFruits(int[][] fruits, int startPos, int k) {
+        int max = 0, sum = 0, l = 0;
+        for (int r = 0; r < fruits.length; r++) {
+            sum += fruits[r][1];
+            while (l <= r && !canReach(fruits[l][0], fruits[r][0], startPos, k)) {
+                sum -= fruits[l][1];
+                l++;
+            }
+            max = Math.max(max, sum);
+
+        }
+        return max;
+
+    }
+
+    private boolean canReach(int left, int right, int startPos, int k) {
+        if (right <= startPos)
+            return startPos - left <= k;
+        if (left >= startPos)
+            return right - startPos <= k;
+        int LD = startPos - left;
+        int RD = right - startPos;
+        int min = Math.min(2 * LD + RD, 2 * RD + LD);
+        if (min <= k) {
+            return true;
+        }
+        return false;
+    }
+}
